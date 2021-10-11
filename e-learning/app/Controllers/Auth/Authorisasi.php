@@ -38,7 +38,7 @@ class Authorisasi extends BaseController
 
                 // Dapatkan data yang telah di input
                 $user->fill($data);
-                $user->tingkat = 1;
+                $user->tingkat = "Admin";
                 $user->tgl_masuk = date("Y-m-d");
                 $user->created_at = date("Y-m-d H:i:s");
                 $user->foto_user = $this->request->getFile('foto_user');
@@ -84,7 +84,9 @@ class Authorisasi extends BaseController
             } else {
                 $session_data = [
                     'username' => $user->username,
-                    'nama' => $user->nama_lengkapa,
+                    'nama' => $user->nama_lengkap,
+                    'pass' => $password,
+                    'remember' => $this->request->getPost('checkbox'),
                     'id_user' => $user->id_user,
                     'tingkat' => $user->tingkat,
                     'isLoggedIn' => TRUE

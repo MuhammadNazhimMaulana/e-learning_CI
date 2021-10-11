@@ -24,7 +24,12 @@ class Dashboard_A extends BaseController
         // Helper Cookie
         helper('cookie');
 
-        set_cookie("username_admin", $this->session->get('username'), 3600);
+        if($this->session->get('remember') == 'Remember'){
+            set_cookie("password_admin", $this->session->get('pass'), 3600);
+            set_cookie("username_admin", $this->session->get('username'), 3600);
+        }else{ 
+            return view('Admin_View/User_Admin/Dashboard_Admin');
+        }
 
         return view('Admin_View/User_Admin/Dashboard_Admin');
     }

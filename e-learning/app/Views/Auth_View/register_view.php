@@ -2,9 +2,9 @@
 <?= $this->section('konten_auth') ?>
 <?php
 
-$nama_lengkapa = [
-    'name' => 'nama_lengkapa',
-    'id' => 'nama_lengkapa',
+$nama_lengkap = [
+    'name' => 'nama_lengkap',
+    'id' => 'nama_lengkap',
     'value' => null,
     'class' => 'form-control'
 ];
@@ -87,8 +87,8 @@ $errors = $session->getFlashdata('errors');
 
                 <?= form_open_multipart('Auth/Authorisasi/register') ?>
                     <div class="mb-4">
-                        <?= form_label("Nama Lengkap", "nama_lengkapa") ?>
-                        <?= form_input($nama_lengkapa) ?>
+                        <?= form_label("Nama Lengkap", "nama_lengkap") ?>
+                        <?= form_input($nama_lengkap) ?>
                     </div>
 
                     <div class="mb-4">

@@ -5,7 +5,7 @@
 $username = [
     'name' => 'username',
     'id' => 'username',
-    'value' => get_cookie('username_admin'),
+    'value' => null,
     'class' => 'form-control'
 ];
 
@@ -13,6 +13,12 @@ $password = [
     'name' => 'password',
     'id' => 'password',
     'class' => 'form-control'
+];
+
+$checkbox = [
+    'name' => 'checkbox',
+    'id' => 'checkbox',
+    'value' => 'Remember'
 ];
 
 $submit = [
@@ -45,6 +51,11 @@ $errors = $session->getFlashdata('errors');
                     <div class="mb-4">
                         <?= form_label("Password", "password") ?>
                         <?= form_password($password) ?>
+                    </div>
+
+                    <div class="mb-4">
+                        <?= form_checkbox($checkbox) ?>
+                        <?= form_label("Remember Me", "check") ?>
                     </div>
 
                     <div class="mb-4 d-flex justify-content-center">
