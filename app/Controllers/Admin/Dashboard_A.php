@@ -39,7 +39,7 @@ class Dashboard_A extends BaseController
                 'title' => 'Login dengan membuat'
             ];
 
-        }else if(get_cookie("cookie_token") != null){
+        }else if(get_cookie("cookie_token") != null && $this->session->get('cek') == true){
             $cookie_token = get_cookie("cookie_token");
 
             $model = new User_M();
@@ -51,8 +51,16 @@ class Dashboard_A extends BaseController
                 'title' => 'Login pakai cookie'
             ];
         }else{
+            $id_user = $this->session->get('id_user');
 
+            $model = new User_M();
+    
+            $user = $model->find($id_user);
+
+            delete_cookie("cookie_token");
+            
             $data = [
+                'user' => $user,
                 'title' => 'Login biasa'
             ];
         }

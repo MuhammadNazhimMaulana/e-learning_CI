@@ -15,11 +15,21 @@ $password = [
     'class' => 'form-control'
 ];
 
-$checkbox = [
-    'name' => 'checkbox',
-    'id' => 'checkbox',
-    'value' => 'Remember'
-];
+if(get_cookie('cookie_token') != null){
+    $checkbox = [
+        'name' => 'checkbox',
+        'id' => 'checkbox',
+        'value' => 'Remember',
+        'checked' => true
+    ];
+}else{
+    $checkbox = [
+        'name' => 'checkbox',
+        'id' => 'checkbox',
+        'value' => 'Remember',
+        'checked' => false
+    ];
+}
 
 $submit = [
     'name' => 'submit',
@@ -41,6 +51,20 @@ $errors = $session->getFlashdata('errors');
                     <p class="text-center  mb-4">POS Bonevian</p>
                     <img src="<?= base_url('img/Bonevian.png') ?>" class="w-25" />
                 </div>
+                
+                <?php if ($errors != null) : ?>
+                    <div class="alert alert-danger" role="alert">
+                        <h4 class="alert-heading">Terjadi Kesalahan</h4>
+                        <hr>
+                        <p class="mb-0">
+                            <?php foreach ($errors as $err) {
+                                echo $err . '<br>';
+                            }
+
+                            ?>
+                        </p>
+                    </div>
+                <?php endif ?>
 
                 <?= form_open('Auth/Authorisasi/login') ?>
                     <div class="mb-4">

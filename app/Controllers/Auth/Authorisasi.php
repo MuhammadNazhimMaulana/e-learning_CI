@@ -56,13 +56,14 @@ class Authorisasi extends BaseController
 
     public function login()
     {
+        // Helper Cookie
+        helper('cookie');
         
         if ($this->request->getPost()) {
-            // Helper Cookie
-            helper('cookie');
 
             if ($this->request->getPost('checkbox') && get_cookie('cookie_token') != null){
                 $session_data = [
+                    'cek' => TRUE,
                     'isLoggedIn' => TRUE
                 ];
     
@@ -90,7 +91,7 @@ class Authorisasi extends BaseController
                     if (password_verify($password, $user->password) == false) {
                 
                     $this->session->setFlashdata('errors', ['Password Salah']);
-                    }else if($this->request->getPost('checkbox') != null && $user->cookie_token == null){
+                    }else{
                         $session_data = [
                             'username' => $user->username,
                             'nama' => $user->nama_lengkap,
