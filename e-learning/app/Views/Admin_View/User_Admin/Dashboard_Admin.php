@@ -4,4 +4,5 @@
 $session = session();
 
 echo $session->get('remember');
+echo $user->username;
 ?>

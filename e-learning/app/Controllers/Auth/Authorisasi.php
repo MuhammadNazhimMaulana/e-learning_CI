@@ -56,48 +56,67 @@ class Authorisasi extends BaseController
 
     public function login()
     {
-        // Helper Cookie
-        helper('cookie');
-
+        
         if ($this->request->getPost()) {
+            // Helper Cookie
+            helper('cookie');
 
-            // Validasi data yang di post
-            $data = $this->request->getPost();
-            $validate = $this->validation->run($data, 'login');
-
-            $errors = $this->validation->getErrors();
-
-            if ($errors) {
-                return view('login');
-            }
-
-            $model = new User_M();
-
-            $username = $this->request->getPost('username');
-            $password = $this->request->getPost('password');
-
-            $user = $model->where('username', $username)->first();
-
-            if (password_verify($password, $user->password) == false) {
-
-                $this->session->setFlashdata('errors', ['Password Salah']);
-            } else {
+            if ($this->request->getPost('checkbox') && get_cookie('cookie_token') != null){
                 $session_data = [
-                    'username' => $user->username,
-                    'nama' => $user->nama_lengkap,
-                    'pass' => $password,
-                    'remember' => $this->request->getPost('checkbox'),
-                    'id_user' => $user->id_user,
-                    'tingkat' => $user->tingkat,
                     'isLoggedIn' => TRUE
                 ];
-
+    
                 $this->session->set($session_data);
-
                 return redirect()->to(site_url('Admin/Dashboard_A/'));
-            }
+                
+            }else{
+                // Validasi data yang di post
+                $data = $this->request->getPost();
+                $validate = $this->validation->run($data, 'login');
+        
+                $errors = $this->validation->getErrors();
+                
+                    if ($errors) {
+                        return view('login');
+                    }
+                
+                    $model = new User_M();
+                
+                    $username = $this->request->getPost('username');
+                    $password = $this->request->getPost('password');
+                
+                    $user = $model->where('username', $username)->first();
+                
+                    if (password_verify($password, $user->password) == false) {
+                
+                    $this->session->setFlashdata('errors', ['Password Salah']);
+                    }else if($this->request->getPost('checkbox') != null && $user->cookie_token == null){
+                        $session_data = [
+                            'username' => $user->username,
+                            'nama' => $user->nama_lengkap,
+                            'remember' => $this->request->getPost('checkbox'),
+                            'id_user' => $user->id_user,
+                            'tingkat' => $user->tingkat,
+                            'isLoggedIn' => TRUE
+                        ];
+                
+                        $this->session->set($session_data);
+                
+                            if ($this->session->get('remember') == 'Remember' && $user->cookie_token == null){
+                                $id_user = $this->session->get('id_user');
+                                $data_user = $model->find($id_user);
             
-            $this->session->setFlashdata('errors', $errors);
+                                $user = new User_E();
+                                $user->id_user = $id_user;
+                                $user->cookie_token = password_hash(rand(33,100), PASSWORD_DEFAULT);
+                                $model->save($user);
+                            } 
+                
+                            return redirect()->to(site_url('Admin/Dashboard_A/'));
+                        }
+                            
+                        $this->session->setFlashdata('errors', $errors);
+            }
             
         }
 
